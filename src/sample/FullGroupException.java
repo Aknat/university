@@ -8,5 +8,4 @@ public class FullGroupException extends Exception {
     public String getMessage(Student st) {
         return "Full Group! Impossible to add a student: " + st.firstName + " " + st.lastName;
     }
-
 }

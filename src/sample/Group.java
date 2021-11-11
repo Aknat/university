@@ -99,7 +99,7 @@ public class Group {
         else return foundStudent;
     }
 
-    
+
     public String sortStudentsByLastName() {
         Arrays.sort(students, Comparator.nullsLast(new StudentLastNameComparator()));
         return "Current Group{" +
