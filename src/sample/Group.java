@@ -21,7 +21,6 @@ public class Group {
     public Group() {
     }
 
-
     public void addStudent(Student st) throws FullGroupException {
 
         boolean fullGroup = true;
@@ -57,7 +56,7 @@ public class Group {
         for (int i = 0; i < students.length; i++) {
             if (students[i] == null) continue;
             else {
-                if (students[i].sheetId == id) {
+                if (students[i].getSheetId() == id) {
                     students[i] = null;
                     isAbsent = false;
                     break;
@@ -74,7 +73,7 @@ public class Group {
 
             if (students[i] == null) continue;
             else {
-                if (students[i].lastName.equalsIgnoreCase(lastName)) {
+                if (students[i].getLastName().equalsIgnoreCase(lastName)) {
                     students[i] = null;
                     isAbsent = false;
                 }
@@ -89,7 +88,7 @@ public class Group {
         for (int i = 0; i < students.length; i++) {
             if (students[i] == null) continue;
             else {
-                if (students[i].lastName.equalsIgnoreCase(lastName)) {
+                if (students[i].getLastName().equalsIgnoreCase(lastName)) {
                     foundStudent = students[i];
                     break;
                 }

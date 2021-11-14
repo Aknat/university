@@ -1,9 +1,9 @@
 package sample;
 
 public class Human {
-    String firstName;
-    String lastName;
-    GenderType gender;
+    private String firstName;
+    private String lastName;
+    private GenderType gender;
 
     public Human(String firstName, String lastName, GenderType gender) {
         this.firstName = firstName;
