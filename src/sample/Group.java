@@ -1,17 +1,24 @@
 package sample;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Comparator;
 
 import static sample.StudentHelper.readStudentFromConsole;
 
 public class Group {
-    String name;
-    Student[] students = new Student[6];
+    private String name;
+    private Student[] students = new Student[15];
 
     public Group(String name, Student[] students) {
         this.name = name;
         this.students = students;
+    }
+
+    public Group(File file){
+        this.name = file.getName().replaceAll("\\.[^.]+$", "");
+        this.students = GroupFileStorage.loadGroupFromCSV(file).getStudents();
+
     }
 
     public Group(String name) {
@@ -21,6 +28,22 @@ public class Group {
     public Group() {
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Student[] getStudents() {
+        return students;
+    }
+
+    public void setStudents(Student[] students) {
+        this.students = students;
+    }
+
     public void addStudent(Student st) throws FullGroupException {
 
         boolean fullGroup = true;
@@ -28,6 +51,7 @@ public class Group {
             if (students[i] != null) continue;
             else {
                 students[i] = st;
+                st.setGroupName(name);
                 fullGroup = false;
                 break;
             }
@@ -98,6 +122,10 @@ public class Group {
         else return foundStudent;
     }
 
+    public void saveGroup(){
+
+    }
+
 
     public String sortStudentsByLastName() {
         Arrays.sort(students, Comparator.nullsLast(new StudentLastNameComparator()));
@@ -105,6 +133,8 @@ public class Group {
                 "name='" + name + '\'' + ", students=" + Arrays.toString(students) +
                 '}';
     }
+
+
 
 
     @Override

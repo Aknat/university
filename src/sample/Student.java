@@ -51,7 +51,7 @@ public class Student extends Human implements CSVConverter {
                 getLastName() + delimiter +
                 sheetId + delimiter +
                 groupName + delimiter +
-                getGender();
+                getGender() + delimiter;
     }
 
     @Override
@@ -62,7 +62,7 @@ public class Student extends Human implements CSVConverter {
 //        the 1st element should contain Student's first name, otherwise it is set to default (unknown)         / 0
 //        the 2nd element should contain Student's last name, otherwise it is set to default (unknown)          / 1
 //        the 3rd element should contain Student's sheet id, otherwise the system generates the random id       / 2
-//        the 4th element should contain Student's group id, otherwise it is set to default (unknown)           / 3
+//        the 4th element should contain Student's group name, otherwise it is set to default (unknown)           / 3
 //        the 5th element should contain Student's gender name, otherwise it is set to default (NEUTRAL)         / 4
 
         String[] initSubStr = str.split(";");
