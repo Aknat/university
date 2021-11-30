@@ -4,8 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static sample.GroupFileStorage.findFileByGroupName;
-import static sample.GroupFileStorage.saveGroupToCSV;
+import static sample.GroupFileStorage.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -43,16 +42,22 @@ public class Main {
 //        } catch (FullGroupException e) {
 //            System.out.println(e.getMessage(student5));
 //        }
-//        System.out.println("group after creation:" + "\n" + groupA);
-//
+
+//        try {
+//            groupA.deleteStudent("Solo");
+//        } catch (NoStudentException e) {
+//            System.out.println(e.getMessage());
+//        }
+
+
 //        saveGroupToCSV(groupA);
 //
 //        System.out.println(student1.toCSVString());
 //
-//        Student studentX = new Student().fromCSVString("Eno;Cordova; ; trolol;  bye  ; trololo ;");
+//        Student studentX = new Student().fromCSVString("Eno;Cordova; ; trololo;  bye  ; trololo ;");
 //        System.out.println(studentX);
-////
-////
+//
+//
 //        Group groupC = new Group("mercury");
 //        try {
 //            groupC.addStudent(new Student().fromCSVString("Darth;Vader"));
@@ -71,61 +76,14 @@ public class Main {
 //
 
         File folder = new File("/Users/Jupiter/Documents/Development/education/java/progua/university/src/groupFiles");
-
-
-//        File [] files = folder.listFiles();
+        File [] files = folder.listFiles();
 //        System.out.println(Arrays.toString(files));
+        System.out.println(findFileByGroupName("tro", folder));
 
-        System.out.println(findFileByGroupName("mars", folder));
-
-
-
-
-
-
-//        GroupFileStorage.saveGroupToCSV(groupA);
-
-//        File x = new File("/Users/Jupiter/Documents/Development/education/java/progua/university/src/groupFiles/mars.csv");
-//        Group a = new Group(x);
-
-//        System.out.println(a);
-
-
-//        System.out.println();
-//
-//        System.out.println("group after sorting by last name:" + "\n" + groupA.sortStudentsByLastName());
-//
-//
-//        try {
-//            groupA.deleteStudent(666);
-//        } catch (NoStudentException e) {
-//            System.out.println("\n" + e.getMessage());
-//        }
-//
-//
-//        try {
-//            groupA.deleteStudent("Suvorov");
-//        } catch (NoStudentException e) {
-//            System.out.println("\n" + e.getMessage());
-//        }
-//        System.out.println("\n" + "group after member removal:" + "\n" + groupA);
-//
-//
-//        try {
-//            System.out.println("\n" + "Student is found in the group:" + groupA.searchStudent("Zoo"));
-//        } catch (NoStudentException e) {
-//            System.out.println("\n" + e.getMessage());
-//        }
-//
-//        Group groupB = new Group("jupiter");
-//        try {
-//            groupB.addStudentFromConsole();
-//        } catch (FullGroupException e) {
-//            e.printStackTrace();
-//        }
-//
-//        System.out.println();
-//        System.out.println(groupB);
+        File x = new File("/Users/Jupiter/Documents/Development/education/java/progua/university/src/groupFiles/mars.csv");
+//        System.out.println(loadGroupFromCSV(x));
+        Group a = new Group(x);
+        System.out.println(a);
 
     }
 }

@@ -1,21 +1,21 @@
 package sample;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.*;
 
 import static sample.StudentHelper.readStudentFromConsole;
 
 public class Group {
+    private final int groupCapacity = 5;
     private String name;
-    private Student[] students = new Student[15];
+    private List<Student> students = new ArrayList<>();
 
-    public Group(String name, Student[] students) {
+    public Group(String name, List<Student> students) {
         this.name = name;
         this.students = students;
     }
 
-    public Group(File file){
+    public Group(File file) {
         this.name = file.getName().replaceAll("\\.[^.]+$", "");
         this.students = GroupFileStorage.loadGroupFromCSV(file).getStudents();
 
@@ -36,55 +36,36 @@ public class Group {
         this.name = name;
     }
 
-    public Student[] getStudents() {
+    public List<Student> getStudents() {
         return students;
     }
 
-    public void setStudents(Student[] students) {
+    public void setStudents(List<Student> students) {
         this.students = students;
     }
 
-    public void addStudent(Student st) throws FullGroupException {
 
-        boolean fullGroup = true;
-        for (int i = 0; i < students.length; i++) {
-            if (students[i] != null) continue;
-            else {
-                students[i] = st;
-                st.setGroupName(name);
-                fullGroup = false;
-                break;
-            }
-        }
-        if (fullGroup) throw new FullGroupException(st);
+    public void addStudent(Student st) throws FullGroupException {
+        if (students.size() < groupCapacity) {
+            st.setGroupName(name);
+            students.add(st);
+        } else throw new FullGroupException(st);
     }
 
 
     public void addStudentFromConsole() throws FullGroupException {
         final Student student = readStudentFromConsole();
-        boolean fullGroup = true;
-        for (int i = 0; i < students.length; i++) {
-            if (students[i] != null) continue;
-            else {
-                students[i] = student;
-                fullGroup = false;
-                break;
-            }
-        }
-        if (fullGroup) throw new FullGroupException(student);
+        addStudent(student);
     }
 
 
     public void deleteStudent(long id) throws NoStudentException {
         boolean isAbsent = true;
-        for (int i = 0; i < students.length; i++) {
-            if (students[i] == null) continue;
-            else {
-                if (students[i].getSheetId() == id) {
-                    students[i] = null;
-                    isAbsent = false;
-                    break;
-                }
+        for (int i = 0; i < students.size(); i++) {
+            if (students.get(i).getSheetId() == id) {
+                students.remove(i);
+                isAbsent = false;
+                break;
             }
         }
         if (isAbsent) throw new NoStudentException(Long.toString(id));
@@ -93,55 +74,45 @@ public class Group {
 
     public void deleteStudent(String lastName) throws NoStudentException {
         boolean isAbsent = true;
-        for (int i = 0; i < students.length; i++) {
-
-            if (students[i] == null) continue;
-            else {
-                if (students[i].getLastName().equalsIgnoreCase(lastName)) {
-                    students[i] = null;
-                    isAbsent = false;
-                }
+        for (int i = 0; i < students.size(); i++) {
+            if (students.get(i).getLastName().equalsIgnoreCase(lastName)) {
+                students.remove(i);
+                isAbsent = false;
             }
         }
         if (isAbsent) throw new NoStudentException(lastName);
     }
 
 
-    public Student searchStudent(String lastName) throws NoStudentException {
+    public List<Student> searchStudent(String lastName) throws NoStudentException {
+        List<Student> foundStudents = new ArrayList();
         Student foundStudent = null;
-        for (int i = 0; i < students.length; i++) {
-            if (students[i] == null) continue;
-            else {
-                if (students[i].getLastName().equalsIgnoreCase(lastName)) {
-                    foundStudent = students[i];
-                    break;
-                }
+        for (int i = 0; i < students.size(); i++) {
+            if (students.get(i).getLastName().equalsIgnoreCase(lastName)) {
+                foundStudent = students.get(i);
+                foundStudents.add(foundStudent);
             }
         }
-        if (foundStudent == null) throw new NoStudentException(lastName);
-        else return foundStudent;
+        if (foundStudents.size() == 0) throw new NoStudentException(lastName);
+        else return foundStudents;
     }
 
-    public void saveGroup(){
 
+    public void saveGroup() {
     }
 
 
     public String sortStudentsByLastName() {
-        Arrays.sort(students, Comparator.nullsLast(new StudentLastNameComparator()));
-        return "Current Group{" +
-                "name='" + name + '\'' + ", students=" + Arrays.toString(students) +
-                '}';
+        Collections.sort(students, Comparator.nullsLast(new StudentLastNameComparator()));
+        return "Current Group {" +
+                "name='" + name + '\'' + ", students=" + students + '}';
     }
-
-
 
 
     @Override
     public String toString() {
-        Arrays.sort(students, Comparator.nullsLast(new StudentNameComparator()));
-        return "Current Group{" +
-                "name='" + name + '\'' + ", students=" + Arrays.toString(students) +
-                '}';
+        Collections.sort(students, Comparator.nullsLast(new StudentNameComparator()));
+        return "Current Group {" +
+                "name='" + name + '\'' + ", students=" + students + '}';
     }
 }
