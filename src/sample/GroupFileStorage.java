@@ -2,6 +2,7 @@ package sample;
 
 import java.io.*;
 
+
 public abstract class GroupFileStorage {
 
     public static void saveGroupToCSV(Group group) {
@@ -13,21 +14,20 @@ public abstract class GroupFileStorage {
             e.printStackTrace();
         }
 
-        for (int i = 0; i < group.getStudents().length; i++) {
-            if (group.getStudents()[i] != null) {
-                try (PrintWriter pw = new PrintWriter(new FileWriter(file, true))) // дозапись
-                {
-                    pw.println(group.getStudents()[i].toCSVString());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        group.sortStudentsByLastName();
+        for (int i = 0; i < group.getStudents().size(); i++) {
+            try (PrintWriter pw = new PrintWriter(new FileWriter(file, true))) // дозапись
+            {
+                pw.println(group.getStudents().get(i).toCSVString());
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
 
 
     public static Group loadGroupFromCSV(File file) {
-        Group group = new Group(file.getName());
+        Group group = new Group(file.getName().replaceAll("\\.[^.]+$", ""));
 
         BufferedReader reader = null;
         try {
@@ -63,10 +63,7 @@ public abstract class GroupFileStorage {
         for (File f : allFiles) {
             if (groupName.equalsIgnoreCase(f.getName().replaceAll("\\.[^.]+$", ""))) file = f;
         }
-
         return file;
-
     }
-
 
 }
