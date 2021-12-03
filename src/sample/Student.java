@@ -2,6 +2,7 @@ package sample;
 
 import java.util.Arrays;
 import java.util.InputMismatchException;
+import java.util.Objects;
 
 public class Student extends Human implements CSVConverter {
     private String groupName;
@@ -62,8 +63,8 @@ public class Student extends Human implements CSVConverter {
 //        the 1st element should contain Student's first name, otherwise it is set to default (unknown)         / 0
 //        the 2nd element should contain Student's last name, otherwise it is set to default (unknown)          / 1
 //        the 3rd element should contain Student's sheet id, otherwise the system generates the random id       / 2
-//        the 4th element should contain Student's group name, otherwise it is set to default (unknown)           / 3
-//        the 5th element should contain Student's gender name, otherwise it is set to default (NEUTRAL)         / 4
+//        the 4th element should contain Student's group name, otherwise it is set to default (unknown)         / 3
+//        the 5th element should contain Student's gender name, otherwise it is set to default (NEUTRAL)        / 4
 
         String[] initSubStr = str.split(";");
         String[] subStr = Arrays.copyOf(initSubStr, 5);
@@ -98,5 +99,20 @@ public class Student extends Human implements CSVConverter {
         else student.setGender(GenderType.NEUTRAL);
 
         return student;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Student student = (Student) o;
+        return sheetId == student.sheetId &&
+                Objects.equals(groupName, student.groupName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), groupName, sheetId);
     }
 }

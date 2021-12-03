@@ -6,7 +6,7 @@ import java.util.*;
 import static sample.StudentHelper.readStudentFromConsole;
 
 public class Group {
-    private final int groupCapacity = 5;
+    private final int groupCapacity = 10;
     private String name;
     private List<Student> students = new ArrayList<>();
 
@@ -52,6 +52,28 @@ public class Group {
         } else throw new FullGroupException(st);
     }
 
+
+    public void addStudentCheckForDuplicates(Student st) throws FullGroupException, EqualStudentException {
+        if (isStudentInGroup(st)) throw new EqualStudentException(st.getLastName());
+        else {
+            if (students.size() < groupCapacity) {
+                st.setGroupName(name);
+                students.add(st);
+            } else throw new FullGroupException(st);
+        }
+    }
+
+    public boolean isStudentInGroup(Student st) {
+        boolean result = false;
+        for (int i = 0; i < students.size(); i++) {
+            if (students.get(i).equals(st)) {
+                result = true;
+                break;
+            }
+        }
+        return result;
+
+    }
 
     public void addStudentFromConsole() throws FullGroupException {
         final Student student = readStudentFromConsole();
@@ -108,6 +130,19 @@ public class Group {
                 "name='" + name + '\'' + ", students=" + students + '}';
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Group group = (Group) o;
+        return Objects.equals(name, group.name) && students.equals(group.students);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(groupCapacity, name, students);
+    }
 
     @Override
     public String toString() {
